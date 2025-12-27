@@ -17,3 +17,6 @@ node_modules/
 .env
 .env.local
 .env.production
+# Capacitor / Android
+frontend/android/
+frontend/ios/
