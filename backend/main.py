@@ -46,6 +46,7 @@ def root():
     return {"status": "API running"}
 
 @app.post("/predict")
+@app.post("/predict/")
 def predict_match(req: MatchRequest):
     t1 = compute_team_features(req.xi1, career, recent)
     t2 = compute_team_features(req.xi2, career, recent)
