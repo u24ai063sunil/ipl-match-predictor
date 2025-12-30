@@ -1,12 +1,20 @@
-import { useState } from "react";
-import { TEAMS,VENUES } from "../data/teams";
-import {PLAYER_NAMES} from "../data/playerNames";
+import { useState, useEffect } from "react";
+import { TEAMS, VENUES } from "../data/teams";
+import { PLAYER_NAMES } from "../data/playerNames";
 
-// Enhanced XI Input Component
+// Enhanced XI Input Component with Better Mobile Support
 function XIInputList({ team, xi, setXi, allPlayers }) {
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [searchTerms, setSearchTerms] = useState(Array(11).fill(""));
   const [playerRoles, setPlayerRoles] = useState(Array(11).fill(""));
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const selectPlayer = (player, index) => {
     const newXi = [...xi];
@@ -111,7 +119,7 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
                         width: '100%',
                         border: '1px solid #d1d5db',
                         borderRadius: '0.375rem',
-                        padding: '0.5rem 0.75rem',
+                        padding: '0.5rem 2rem 0.5rem 0.75rem',
                         fontSize: '0.875rem',
                         background: xi[i] ? '#eff6ff' : 'white',
                         color: xi[i] ? '#1e40af' : '#111827',
@@ -120,8 +128,8 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
                     />
                     
                     {xi[i] && (
-                      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', padding: '0 0.75rem', pointerEvents: 'none' }}>
-                        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1e40af' }}>
+                      <div style={{ position: 'absolute', top: 0, left: 0, right: '2rem', bottom: 0, display: 'flex', alignItems: 'center', padding: '0 0.75rem', pointerEvents: 'none', overflow: 'hidden' }}>
+                        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1e40af', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {xi[i]}
                         </span>
                       </div>
@@ -137,21 +145,52 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
                     )}
 
                     {showDropdown && (
-                      <div style={{ position: 'absolute', zIndex: 20, width: '100%', marginTop: '0.25rem', background: 'white', border: '1px solid #d1d5db', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', maxHeight: '15rem', overflowY: 'auto' }}>
+                      <div style={{ 
+                        position: isMobile ? 'fixed' : 'absolute',
+                        ...(isMobile ? {
+                          left: '5%',
+                          right: '5%',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          maxWidth: '90%',
+                          margin: '0 auto'
+                        } : {
+                          width: '100%',
+                          marginTop: '0.25rem'
+                        }),
+                        zIndex: 9999, 
+                        background: 'white', 
+                        border: '1px solid #d1d5db', 
+                        borderRadius: '0.5rem', 
+                        boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)', 
+                        maxHeight: isMobile ? '70vh' : '15rem', 
+                        overflowY: 'auto'
+                      }}>
                         {filteredPlayers.map(player => (
                           <div
                             key={player}
                             onMouseDown={() => selectPlayer(player, i)}
-                            style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', fontSize: '0.875rem', borderBottom: '1px solid #f3f4f6', color: '#111827' }}
-                            onMouseEnter={e => e.target.style.background = '#eff6ff'}
-                            onMouseLeave={e => e.target.style.background = 'white'}
+                            onTouchStart={(e) => {
+                              e.preventDefault();
+                              selectPlayer(player, i);
+                            }}
+                            style={{ 
+                              padding: '0.75rem 1rem', 
+                              cursor: 'pointer', 
+                              fontSize: '0.875rem', 
+                              borderBottom: '1px solid #f3f4f6', 
+                              color: '#111827',
+                              background: 'white'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.background = '#eff6ff'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'white'}
                           >
                             {player}
                           </div>
                         ))}
                         
                         {filteredPlayers.length === 0 && searchTerms[i] && (
-                          <div style={{ padding: '0.5rem 0.75rem', fontSize: '0.875rem', color: '#6b7280', fontStyle: 'italic' }}>
+                          <div style={{ padding: '0.75rem 1rem', fontSize: '0.875rem', color: '#6b7280', fontStyle: 'italic' }}>
                             No players found
                           </div>
                         )}
@@ -218,10 +257,10 @@ function ResultCard({ result }) {
       <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#1f2937' }}>Match Prediction</h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-          <span style={{ fontWeight: '600', color: '#374151' }}>{result.team1}</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ width: '12rem', background: '#e5e7eb', borderRadius: '9999px', height: '0.75rem', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <span style={{ fontWeight: '600', color: '#374151', minWidth: '120px' }}>{result.team1}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: '200px' }}>
+            <div style={{ width: '100%', maxWidth: '12rem', background: '#e5e7eb', borderRadius: '9999px', height: '0.75rem', overflow: 'hidden' }}>
               <div 
                 style={{ 
                   background: '#2563eb', 
@@ -231,16 +270,16 @@ function ResultCard({ result }) {
                 }}
               />
             </div>
-            <span style={{ fontWeight: 'bold', fontSize: '1.125rem', color: '#1e40af', width: '4rem', textAlign: 'right' }}>
+            <span style={{ fontWeight: 'bold', fontSize: '1.125rem', color: '#1e40af', minWidth: '4rem', textAlign: 'right' }}>
               {(result.team1_win_prob * 100).toFixed(1)}%
             </span>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-          <span style={{ fontWeight: '600', color: '#374151' }}>{result.team2}</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ width: '12rem', background: '#e5e7eb', borderRadius: '9999px', height: '0.75rem', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <span style={{ fontWeight: '600', color: '#374151', minWidth: '120px' }}>{result.team2}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: '200px' }}>
+            <div style={{ width: '100%', maxWidth: '12rem', background: '#e5e7eb', borderRadius: '9999px', height: '0.75rem', overflow: 'hidden' }}>
               <div 
                 style={{ 
                   background: '#4f46e5', 
@@ -250,7 +289,7 @@ function ResultCard({ result }) {
                 }}
               />
             </div>
-            <span style={{ fontWeight: 'bold', fontSize: '1.125rem', color: '#4338ca', width: '4rem', textAlign: 'right' }}>
+            <span style={{ fontWeight: 'bold', fontSize: '1.125rem', color: '#4338ca', minWidth: '4rem', textAlign: 'right' }}>
               {(result.team2_win_prob * 100).toFixed(1)}%
             </span>
           </div>
@@ -352,7 +391,7 @@ export default function MatchForm() {
           </h1>
 
           {/* Teams Selection */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>Team 1</label>
               <select 
@@ -404,7 +443,7 @@ export default function MatchForm() {
           </div>
 
           {/* Toss Selection */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>Toss Winner</label>
               <select 
@@ -433,7 +472,7 @@ export default function MatchForm() {
 
           {/* XI Selection */}
           {(team1 || team2) && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
               {team1 && (
                 <XIInputList
                   team={team1}
