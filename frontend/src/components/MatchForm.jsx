@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { TEAMS, VENUES } from "../data/teams";
 import { PLAYER_NAMES } from "../data/playerNames";
 
 // Enhanced XI Input Component with Better Mobile Support
-function XIInputList({ team, xi, setXi, allPlayers }) {
+function XIInputList({ team, xi, setXi, allPlayers, otherTeamXi = [] }) {
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [searchTerms, setSearchTerms] = useState(Array(11).fill(""));
   const [playerRoles, setPlayerRoles] = useState(Array(11).fill(""));
   const [isMobile, setIsMobile] = useState(false);
+  const dropdownRefs = useRef([]);
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -15,6 +17,33 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Click outside handler to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (focusedIndex !== null) {
+        const dropdown = dropdownRefs.current[focusedIndex];
+        const input = inputRefs.current[focusedIndex];
+        
+        if (
+          dropdown && 
+          !dropdown.contains(event.target) && 
+          input && 
+          !input.contains(event.target)
+        ) {
+          setFocusedIndex(null);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [focusedIndex]);
 
   const selectPlayer = (player, index) => {
     const newXi = [...xi];
@@ -45,6 +74,25 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
 
   const updateRole = (index, role) => {
     const newRoles = [...playerRoles];
+    
+    // Check for Captain constraint
+    if (role === "Captain") {
+      const currentCaptainIndex = playerRoles.findIndex(r => r === "Captain");
+      if (currentCaptainIndex !== -1 && currentCaptainIndex !== index) {
+        alert(`${xi[currentCaptainIndex]} is already the captain. Please remove their captaincy first.`);
+        return;
+      }
+    }
+    
+    // Check for Wicket-Keeper constraint
+    if (role === "Wicket-Keeper") {
+      const currentWKIndex = playerRoles.findIndex(r => r === "Wicket-Keeper");
+      if (currentWKIndex !== -1 && currentWKIndex !== index) {
+        alert(`${xi[currentWKIndex]} is already the wicket-keeper. Please remove their role first.`);
+        return;
+      }
+    }
+    
     newRoles[index] = role;
     setPlayerRoles(newRoles);
   };
@@ -61,9 +109,10 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
     return allPlayers
       .filter(p => {
         const isNotSelected = !xi.includes(p);
+        const isNotInOtherTeam = !otherTeamXi.includes(p);
         const matchesSearch = searchTerm === "" || 
           p.toLowerCase().includes(searchTerm);
-        return isNotSelected && matchesSearch;
+        return isNotSelected && isNotInOtherTeam && matchesSearch;
       })
       .slice(0, 20);
   };
@@ -98,6 +147,7 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
                 <div style={{ flex: 1 }}>
                   <div style={{ position: 'relative' }}>
                     <input
+                      ref={el => inputRefs.current[i] = el}
                       type="text"
                       placeholder={xi[i] || `Select Player ${i + 1}`}
                       value={xi[i] ? "" : searchTerms[i]}
@@ -106,9 +156,6 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
                         if (xi[i]) {
                           updateSearchTerm(i, "");
                         }
-                      }}
-                      onBlur={() => {
-                        setTimeout(() => setFocusedIndex(null), 200);
                       }}
                       onChange={e => {
                         if (!xi[i]) {
@@ -145,31 +192,36 @@ function XIInputList({ team, xi, setXi, allPlayers }) {
                     )}
 
                     {showDropdown && (
-                      <div style={{ 
-                        position: isMobile ? 'fixed' : 'absolute',
-                        ...(isMobile ? {
-                          left: '5%',
-                          right: '5%',
-                          top: '50%',
-                          transform: 'translateY(-50%)',
-                          maxWidth: '90%',
-                          margin: '0 auto'
-                        } : {
-                          width: '100%',
-                          marginTop: '0.25rem'
-                        }),
-                        zIndex: 9999, 
-                        background: 'white', 
-                        border: '1px solid #d1d5db', 
-                        borderRadius: '0.5rem', 
-                        boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)', 
-                        maxHeight: isMobile ? '70vh' : '15rem', 
-                        overflowY: 'auto'
-                      }}>
+                      <div 
+                        ref={el => dropdownRefs.current[i] = el}
+                        style={{ 
+                          position: isMobile ? 'fixed' : 'absolute',
+                          ...(isMobile ? {
+                            left: '5%',
+                            right: '5%',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            maxWidth: '90%',
+                            margin: '0 auto'
+                          } : {
+                            width: '100%',
+                            marginTop: '0.25rem'
+                          }),
+                          zIndex: 9999, 
+                          background: 'white', 
+                          border: '1px solid #d1d5db', 
+                          borderRadius: '0.5rem', 
+                          boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)', 
+                          maxHeight: isMobile ? '70vh' : '15rem', 
+                          overflowY: 'auto'
+                        }}>
                         {filteredPlayers.map(player => (
                           <div
                             key={player}
-                            onMouseDown={() => selectPlayer(player, i)}
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              selectPlayer(player, i);
+                            }}
                             onTouchStart={(e) => {
                               e.preventDefault();
                               selectPlayer(player, i);
@@ -479,6 +531,7 @@ export default function MatchForm() {
                   xi={xi1}
                   setXi={setXi1}
                   allPlayers={PLAYER_NAMES}
+                  otherTeamXi={xi2}
                 />
               )}
 
@@ -488,6 +541,7 @@ export default function MatchForm() {
                   xi={xi2}
                   setXi={setXi2}
                   allPlayers={PLAYER_NAMES}
+                  otherTeamXi={xi1}
                 />
               )}
             </div>
