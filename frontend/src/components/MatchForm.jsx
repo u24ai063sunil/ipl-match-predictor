@@ -129,8 +129,8 @@ function XIInputList({ team, xi, setXi, allPlayers, otherTeamXi = [] }) {
   };
 
   return (
-    <div style={{ border: '1px solid #e5e7eb', padding: '1rem', borderRadius: '0.5rem', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-      <h2 style={{ fontWeight: 'bold', fontSize: '1.125rem', marginBottom: '0.75rem', color: '#1f2937' }}>{team} Playing XI</h2>
+    <div style={{ border: '1px solid #3a3a3a', padding: '1rem', borderRadius: '0.5rem', background: '#1a1a1a', boxShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
+      <h2 style={{ fontWeight: 'bold', fontSize: '1.125rem', marginBottom: '0.75rem', color: '#e5e7eb' }}>{team} Playing XI</h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         {[...Array(11)].map((_, i) => {
@@ -142,7 +142,7 @@ function XIInputList({ team, xi, setXi, allPlayers, otherTeamXi = [] }) {
           return (
             <div key={i} style={{ position: 'relative', marginBottom: '0.75rem' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.875rem', color: '#6b7280', width: '1.5rem', marginTop: '0.5rem' }}>{i + 1}.</span>
+                <span style={{ fontSize: '0.875rem', color: '#9ca3af', width: '1.5rem', marginTop: '0.5rem' }}>{i + 1}.</span>
                 
                 <div style={{ flex: 1 }}>
                   <div style={{ position: 'relative' }}>
@@ -164,19 +164,19 @@ function XIInputList({ team, xi, setXi, allPlayers, otherTeamXi = [] }) {
                       }}
                       style={{
                         width: '100%',
-                        border: '1px solid #d1d5db',
+                        border: '1px solid #3a3a3a',
                         borderRadius: '0.375rem',
                         padding: '0.5rem 2rem 0.5rem 0.75rem',
                         fontSize: '0.875rem',
-                        background: xi[i] ? '#eff6ff' : 'white',
-                        color: xi[i] ? '#1e40af' : '#111827',
+                        background: xi[i] ? '#2a2a2a' : '#1a1a1a',
+                        color: xi[i] ? '#00d4ff' : '#e5e7eb',
                         fontWeight: xi[i] ? '500' : 'normal'
                       }}
                     />
                     
                     {xi[i] && (
                       <div style={{ position: 'absolute', top: 0, left: 0, right: '2rem', bottom: 0, display: 'flex', alignItems: 'center', padding: '0 0.75rem', pointerEvents: 'none', overflow: 'hidden' }}>
-                        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: '#1e40af', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <span style={{ fontSize: '0.875rem', fontWeight: '500', color: '#00d4ff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {xi[i]}
                         </span>
                       </div>
@@ -208,10 +208,10 @@ function XIInputList({ team, xi, setXi, allPlayers, otherTeamXi = [] }) {
                             marginTop: '0.25rem'
                           }),
                           zIndex: 9999, 
-                          background: 'white', 
-                          border: '1px solid #d1d5db', 
+                          background: '#2a2a2a', 
+                          border: '1px solid #3a3a3a', 
                           borderRadius: '0.5rem', 
-                          boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)', 
+                          boxShadow: '0 10px 25px -5px rgba(0,0,0,0.5)', 
                           maxHeight: isMobile ? '70vh' : '15rem', 
                           overflowY: 'auto'
                         }}>
@@ -230,19 +230,19 @@ function XIInputList({ team, xi, setXi, allPlayers, otherTeamXi = [] }) {
                               padding: '0.75rem 1rem', 
                               cursor: 'pointer', 
                               fontSize: '0.875rem', 
-                              borderBottom: '1px solid #f3f4f6', 
-                              color: '#111827',
-                              background: 'white'
+                              borderBottom: '1px solid #1a1a1a', 
+                              color: '#e5e7eb',
+                              background: '#2a2a2a'
                             }}
-                            onMouseEnter={e => e.currentTarget.style.background = '#eff6ff'}
-                            onMouseLeave={e => e.currentTarget.style.background = 'white'}
+                            onMouseEnter={e => e.currentTarget.style.background = '#3a3a3a'}
+                            onMouseLeave={e => e.currentTarget.style.background = '#2a2a2a'}
                           >
                             {player}
                           </div>
                         ))}
                         
                         {filteredPlayers.length === 0 && searchTerms[i] && (
-                          <div style={{ padding: '0.75rem 1rem', fontSize: '0.875rem', color: '#6b7280', fontStyle: 'italic' }}>
+                          <div style={{ padding: '0.75rem 1rem', fontSize: '0.875rem', color: '#9ca3af', fontStyle: 'italic' }}>
                             No players found
                           </div>
                         )}
@@ -265,9 +265,9 @@ function XIInputList({ team, xi, setXi, allPlayers, otherTeamXi = [] }) {
                               padding: '0.25rem 0.5rem',
                               fontSize: '0.75rem',
                               borderRadius: '0.25rem',
-                              border: isSelected ? '2px solid ' + colors.text : '1px solid #d1d5db',
-                              background: isSelected ? colors.bg : 'white',
-                              color: isSelected ? colors.text : '#6b7280',
+                              border: isSelected ? '2px solid ' + colors.text : '1px solid #3a3a3a',
+                              background: isSelected ? colors.bg : '#2a2a2a',
+                              color: isSelected ? colors.text : '#9ca3af',
                               cursor: 'pointer',
                               fontWeight: isSelected ? '600' : '400',
                               transition: 'all 0.2s'
@@ -287,7 +287,7 @@ function XIInputList({ team, xi, setXi, allPlayers, otherTeamXi = [] }) {
       </div>
 
       <div style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>
-        <span style={{ fontWeight: '500', color: xi.filter(Boolean).length === 11 ? '#16a34a' : '#4b5563' }}>
+        <span style={{ fontWeight: '500', color: xi.filter(Boolean).length === 11 ? '#10b981' : '#9ca3af' }}>
           Selected: {xi.filter(Boolean).length} / 11
         </span>
       </div>
@@ -305,54 +305,54 @@ function ResultCard({ result }) {
   const winnerProb = Math.max(result.team1_win_prob, result.team2_win_prob);
 
   return (
-    <div style={{ marginTop: '1.5rem', padding: '1.5rem', border: '2px solid #3b82f6', borderRadius: '0.5rem', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)' }}>
-      <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#1f2937' }}>Match Prediction</h2>
+    <div style={{ marginTop: '1.5rem', padding: '1.5rem', border: '2px solid #00d4ff', borderRadius: '0.5rem', background: '#1a1a1a' }}>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#e5e7eb' }}>Match Prediction</h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <span style={{ fontWeight: '600', color: '#374151', minWidth: '120px' }}>{result.team1}</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: '#2a2a2a', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.3)', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <span style={{ fontWeight: '600', color: '#e5e7eb', minWidth: '120px' }}>{result.team1}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: '200px' }}>
-            <div style={{ width: '100%', maxWidth: '12rem', background: '#e5e7eb', borderRadius: '9999px', height: '0.75rem', overflow: 'hidden' }}>
+            <div style={{ width: '100%', maxWidth: '12rem', background: '#3a3a3a', borderRadius: '9999px', height: '0.75rem', overflow: 'hidden' }}>
               <div 
                 style={{ 
-                  background: '#2563eb', 
+                  background: '#00d4ff', 
                   height: '100%', 
                   transition: 'width 0.5s',
                   width: `${result.team1_win_prob * 100}%`
                 }}
               />
             </div>
-            <span style={{ fontWeight: 'bold', fontSize: '1.125rem', color: '#1e40af', minWidth: '4rem', textAlign: 'right' }}>
+            <span style={{ fontWeight: 'bold', fontSize: '1.125rem', color: '#00d4ff', minWidth: '4rem', textAlign: 'right' }}>
               {(result.team1_win_prob * 100).toFixed(1)}%
             </span>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <span style={{ fontWeight: '600', color: '#374151', minWidth: '120px' }}>{result.team2}</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: '#2a2a2a', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.3)', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <span style={{ fontWeight: '600', color: '#e5e7eb', minWidth: '120px' }}>{result.team2}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: '200px' }}>
-            <div style={{ width: '100%', maxWidth: '12rem', background: '#e5e7eb', borderRadius: '9999px', height: '0.75rem', overflow: 'hidden' }}>
+            <div style={{ width: '100%', maxWidth: '12rem', background: '#3a3a3a', borderRadius: '9999px', height: '0.75rem', overflow: 'hidden' }}>
               <div 
                 style={{ 
-                  background: '#4f46e5', 
+                  background: '#0099ff', 
                   height: '100%', 
                   transition: 'width 0.5s',
                   width: `${result.team2_win_prob * 100}%`
                 }}
               />
             </div>
-            <span style={{ fontWeight: 'bold', fontSize: '1.125rem', color: '#4338ca', minWidth: '4rem', textAlign: 'right' }}>
+            <span style={{ fontWeight: 'bold', fontSize: '1.125rem', color: '#0099ff', minWidth: '4rem', textAlign: 'right' }}>
               {(result.team2_win_prob * 100).toFixed(1)}%
             </span>
           </div>
         </div>
       </div>
 
-      <div style={{ marginTop: '1rem', padding: '1rem', background: 'white', borderRadius: '0.5rem', border: '2px solid #22c55e' }}>
-        <p style={{ textAlign: 'center', color: '#374151' }}>
-          <span style={{ color: '#6b7280' }}>Predicted Winner: </span>
-          <span style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#16a34a' }}>{winner}</span>
-          <span style={{ color: '#6b7280', marginLeft: '0.5rem' }}>({(winnerProb * 100).toFixed(1)}%)</span>
+      <div style={{ marginTop: '1rem', padding: '1rem', background: '#2a2a2a', borderRadius: '0.5rem', border: '2px solid #00d4ff' }}>
+        <p style={{ textAlign: 'center', color: '#e5e7eb' }}>
+          <span style={{ color: '#9ca3af' }}>Predicted Winner: </span>
+          <span style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#00d4ff' }}>{winner}</span>
+          <span style={{ color: '#9ca3af', marginLeft: '0.5rem' }}>({(winnerProb * 100).toFixed(1)}%)</span>
         </p>
       </div>
     </div>
@@ -422,30 +422,34 @@ export default function MatchForm() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', 
-      padding: '2rem',
+      background: '#0a0a0a',
+      padding: '2rem 1rem',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start'
     }}>
       <div style={{ 
         width: '100%', 
-        maxWidth: '1280px'
+        maxWidth: '900px'
       }}>
         <div style={{ 
-          background: 'white', 
+          background: '#1a1a1a', 
           borderRadius: '1rem', 
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)', 
-          padding: '2rem' 
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)', 
+          padding: '2rem',
+          border: '1px solid #2a2a2a'
         }}>
-          <h1 style={{ fontSize: '2.25rem', fontWeight: 'bold', marginBottom: '2rem', textAlign: 'center', color: '#2563eb' }}>
-            🏏 IPL Match Predictor
+          <h1 style={{ fontSize: '2.25rem', fontWeight: 'bold', marginBottom: '2rem', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            <span>🏏</span>
+            <span style={{ background: 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              IPL Match Predictor
+            </span>
           </h1>
 
           {/* Teams Selection */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>Team 1</label>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#d1d5db', marginBottom: '0.5rem' }}>Team 1</label>
               <select 
                 value={team1}
                 onChange={e => {
@@ -453,17 +457,17 @@ export default function MatchForm() {
                   setXi1([]);
                   if (tossWinner === team1) setTossWinner("");
                 }}
-                style={{ width: '100%', border: '1px solid #d1d5db', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#111827', background: 'white' }}
+                style={{ width: '100%', border: '1px solid #3a3a3a', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#e5e7eb', background: '#2a2a2a' }}
               >
-                <option value="">Select Team 1</option>
+                <option value="" style={{ background: '#2a2a2a', color: '#e5e7eb' }}>Select Team 1</option>
                 {TEAMS.map(t => (
-                  <option key={t} value={t} disabled={t === team2}>{t}</option>
+                  <option key={t} value={t} disabled={t === team2} style={{ background: '#2a2a2a', color: '#e5e7eb' }}>{t}</option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>Team 2</label>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#d1d5db', marginBottom: '0.5rem' }}>Team 2</label>
               <select 
                 value={team2}
                 onChange={e => {
@@ -471,11 +475,11 @@ export default function MatchForm() {
                   setXi2([]);
                   if (tossWinner === team2) setTossWinner("");
                 }}
-                style={{ width: '100%', border: '1px solid #d1d5db', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#111827', background: 'white' }}
+                style={{ width: '100%', border: '1px solid #3a3a3a', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#e5e7eb', background: '#2a2a2a' }}
               >
-                <option value="">Select Team 2</option>
+                <option value="" style={{ background: '#2a2a2a', color: '#e5e7eb' }}>Select Team 2</option>
                 {TEAMS.map(t => (
-                  <option key={t} value={t} disabled={t === team1}>{t}</option>
+                  <option key={t} value={t} disabled={t === team1} style={{ background: '#2a2a2a', color: '#e5e7eb' }}>{t}</option>
                 ))}
               </select>
             </div>
@@ -483,41 +487,41 @@ export default function MatchForm() {
 
           {/* Venue Selection */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>Venue</label>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#d1d5db', marginBottom: '0.5rem' }}>Venue</label>
             <select 
               value={venue}
               onChange={e => setVenue(e.target.value)}
-              style={{ width: '100%', border: '1px solid #d1d5db', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#111827', background: 'white' }}
+              style={{ width: '100%', border: '1px solid #3a3a3a', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#e5e7eb', background: '#2a2a2a' }}
             >
-              <option value="">Select Venue</option>
-              {VENUES.map(v => <option key={v} value={v}>{v}</option>)}
+              <option value="" style={{ background: '#2a2a2a', color: '#e5e7eb' }}>Select Venue</option>
+              {VENUES.map(v => <option key={v} value={v} style={{ background: '#2a2a2a', color: '#e5e7eb' }}>{v}</option>)}
             </select>
           </div>
 
           {/* Toss Selection */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>Toss Winner</label>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#d1d5db', marginBottom: '0.5rem' }}>Toss Winner</label>
               <select 
                 value={tossWinner}
                 onChange={e => setTossWinner(e.target.value)}
-                style={{ width: '100%', border: '1px solid #d1d5db', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#111827', background: 'white' }}
+                style={{ width: '100%', border: '1px solid #3a3a3a', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#e5e7eb', background: '#2a2a2a' }}
               >
-                <option value="">Select Toss Winner</option>
-                {team1 && <option value={team1}>{team1}</option>}
-                {team2 && <option value={team2}>{team2}</option>}
+                <option value="" style={{ background: '#2a2a2a', color: '#e5e7eb' }}>Select Toss Winner</option>
+                {team1 && <option value={team1} style={{ background: '#2a2a2a', color: '#e5e7eb' }}>{team1}</option>}
+                {team2 && <option value={team2} style={{ background: '#2a2a2a', color: '#e5e7eb' }}>{team2}</option>}
               </select>
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>Toss Decision</label>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#d1d5db', marginBottom: '0.5rem' }}>Toss Decision</label>
               <select 
                 value={tossDecision}
                 onChange={e => setTossDecision(e.target.value)}
-                style={{ width: '100%', border: '1px solid #d1d5db', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#111827', background: 'white' }}
+                style={{ width: '100%', border: '1px solid #3a3a3a', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '1rem', color: '#e5e7eb', background: '#2a2a2a' }}
               >
-                <option value="bat">Bat First</option>
-                <option value="field">Field First</option>
+                <option value="bat" style={{ background: '#2a2a2a', color: '#e5e7eb' }}>Bat First</option>
+                <option value="field" style={{ background: '#2a2a2a', color: '#e5e7eb' }}>Field First</option>
               </select>
             </div>
           </div>
@@ -558,7 +562,7 @@ export default function MatchForm() {
               color: 'white',
               fontWeight: 'bold',
               fontSize: '1.125rem',
-              background: loading ? '#9ca3af' : 'linear-gradient(to right, #2563eb, #4f46e5)',
+              background: loading ? '#9ca3af' : 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)',
               cursor: loading ? 'not-allowed' : 'pointer',
               border: 'none',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
